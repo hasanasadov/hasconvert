@@ -2,7 +2,7 @@
 const InfoSection = () => {
   return (
     <div className="flex flex-col items-center text-[#363636] min-w-4/12 md:w-1/2 lg:w-5/12">
-      <h1 className="text-[#363636] text-2xl">YouTube to MP3 Converter</h1>
+      <h1 className="text-[#363636] text-2xl">YouTube to MP3/MP4 Converter</h1>
       <p className="text-[#363636] text-sm my-3.5">
         Our YouTube to MP3 Converter allows you to convert your favorite YouTube
         videos to MP3 (audio) or MP4 (video) files and to download them for
@@ -28,7 +28,7 @@ const InfoSection = () => {
         maximum length of 45 minutes. As soon as the conversion is completed you
         will be able to download the converted video.
       </p>
-      <p className="text-[#363636] text-sm my-3.5">
+      {/* <p className="text-[#363636] text-sm my-3.5">
         With the usage of Y2Mate you are accepting our Terms of Use. Thank you
         for using our MP3 Converter.
       </p>
@@ -36,7 +36,7 @@ const InfoSection = () => {
       <p className="text-[#363636] text-sm my-3.5">
         If you prefer to search for a YouTube video, we recommend you to try our
         Partner MP3Juice.
-      </p>
+      </p> */}
     </div>
   );
 };

@@ -16,16 +16,14 @@ export default function YoutubeServices() {
     },
   });
 
-  // Dinamik qruplaşdırma (video):
-  const extensionGroups: { [key: string]: any[] } = {};
+  const videoExtensionGroups: { [key: string]: any[] } = {};
   (videoInfo?.videos ?? []).forEach((video: any) => {
     const ext = video.extension?.toLowerCase() || "other";
-    if (!extensionGroups[ext]) extensionGroups[ext] = [];
-    extensionGroups[ext].push(video);
+    if (!videoExtensionGroups[ext]) videoExtensionGroups[ext] = [];
+    videoExtensionGroups[ext].push(video);
   });
-  const extensionKeys = Object.keys(extensionGroups);
+  const videoExtensionKeys = Object.keys(videoExtensionGroups);
 
-  // Dinamik qruplaşdırma (audio):
   const audioExtensionGroups: { [key: string]: any[] } = {};
   (videoInfo?.audios ?? []).forEach((audio: any) => {
     const ext = audio.extension?.toLowerCase() || "other";
@@ -40,7 +38,6 @@ export default function YoutubeServices() {
   const getVideoUrl = () =>
     videoInfo?.videos?.length ? videoInfo.videos[selectedVideo].url : "#";
 
-  // Thumbnail: ən yaxşı keyfiyyətli
   const getBestThumbnail = () => {
     if (!videoInfo?.thumbnails?.length) return "";
     return videoInfo.thumbnails.reduce((prev: any, curr: any) =>
@@ -54,7 +51,7 @@ export default function YoutubeServices() {
   };
 
   return (
-    <div className="flex flex-col items-center bg-gray-50 py-12">
+    <div className="flex flex-col items-center py-12">
       <form
         className="shadow-xl p-6 rounded-xl min-w-[340px] w-full max-w-lg bg-white border"
         onSubmit={handleConvert}
@@ -66,7 +63,7 @@ export default function YoutubeServices() {
           <div className="flex flex-row items-center gap-4 w-full">
             <input
               placeholder="youtube.com/watch?v=38Yzihno1Vs"
-              className="rounded-md p-2 w-full border-2 border-gray-300 focus:border-red-500 focus:ring-red-500"
+              className="rounded-md p-1.5 w-full border-2 border-gray-300 focus:border-red-500 focus:ring-red-500 focus:outline-none transition-all"
               type="text"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
@@ -119,7 +116,7 @@ export default function YoutubeServices() {
                     : "bg-gray-200 text-gray-700"
                 }`}
               >
-                Video (<span>{extensionKeys.join(", ") || "MP4"}</span>)
+                Video (<span>{videoExtensionKeys.join(", ") || "MP4"}</span>)
               </button>
             </div>
 
@@ -193,12 +190,12 @@ export default function YoutubeServices() {
                   Video Download Options:
                 </div>
                 <div
-                  className={`grid grid-cols-1 md:grid-cols-${extensionKeys.length} gap-4 mb-2`}
+                  className={`grid grid-cols-1 md:grid-cols-${videoExtensionKeys.length} gap-4 mb-2`}
                 >
-                  {extensionKeys.map((ext) => (
+                  {videoExtensionKeys.map((ext) => (
                     <div key={ext}>
                       <div className="font-bold mb-2 uppercase">{ext}</div>
-                      {extensionGroups[ext].map((video, rowIdx) => {
+                      {videoExtensionGroups[ext].map((video, rowIdx) => {
                         const idx = videoInfo.videos.findIndex(
                           (v: any) =>
                             v.extension?.toLowerCase() ===

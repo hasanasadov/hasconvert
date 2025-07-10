@@ -5,11 +5,11 @@ import RootLayout from "@/layouts/RootLayout";
 import AuthLayout from "@/layouts/AuthLayout";
 import ProfileLayout from "@/layouts/ProfileLayout";
 
-import HomePage from "@/pages/(business)/home";
+import HomePage from "@/pages/home";
 
 import ErrorPage from "@/components/shared/ErrorPage";
 
-import YoutubeServices from "@/pages/(business)/youtube";
+import YoutubeServices from "@/pages/youtube";
 
 export const router = createBrowserRouter([
   {
