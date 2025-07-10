@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import youtubeRoutes from "./routes/youtube";
 const app = express();
+app.set("trust proxy", 1);
+
 const PORT = 3000;
 
 const allowedOrigins = ["https://hasconvert.vercel.app", "http://localhost:7777"];

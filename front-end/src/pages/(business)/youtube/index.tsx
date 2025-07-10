@@ -54,7 +54,7 @@ export default function YoutubeServices() {
   };
 
   return (
-    <div className="flex flex-col items-center bg-gray-50 min-h-screen py-12">
+    <div className="flex flex-col items-center bg-gray-50 py-12">
       <form
         className="shadow-xl p-6 rounded-xl min-w-[340px] w-full max-w-lg bg-white border"
         onSubmit={handleConvert}
@@ -74,7 +74,7 @@ export default function YoutubeServices() {
             />
             <button
               type="submit"
-              className="bg-black text-white px-4 py-2 rounded-lg transition-all"
+              className="bg-black text-white text-nowrap px-4 py-2 rounded-lg transition-all"
               disabled={isPending}
             >
               {isPending ? "Loading..." : "Get Links"}
