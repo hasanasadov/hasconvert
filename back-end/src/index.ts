@@ -6,11 +6,7 @@ app.set("trust proxy", 1);
 
 const PORT = 3000;
 
-const allowedOrigins = ["https://hasconvert.vercel.app", "http://localhost:7777"];
-
-app.get("/", (req, res) => {
-  res.send("Welcome to HasConvert API");
-});
+const allowedOrigins = [process.env.CLIENT_URL, "http://localhost:7777"];
 
 app.use(
   cors({
@@ -26,6 +22,9 @@ app.use(
 );
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.send("Welcome to HasConvert API");
+});
 app.use("/youtube", youtubeRoutes);
 
 app.listen(PORT, () => {
