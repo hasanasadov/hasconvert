@@ -1,49 +1,22 @@
 import { useState } from "react";
-import axios from "axios";
+import { useMutation } from "@tanstack/react-query";
+import youtubeService from "@/services/youtube";
 
 export default function YoutubeServices() {
   const [url, setUrl] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [videoInfo, setVideoInfo] = useState<any>(null);
-  const [selectedAudio, setSelectedAudio] = useState<number>(0);
-  const [selectedVideo, setSelectedVideo] = useState<number>(0);
+  const [selectedAudio, setSelectedAudio] = useState(0);
+  const [selectedVideo, setSelectedVideo] = useState(0);
   const [activeTab, setActiveTab] = useState<"mp3" | "mp4">("mp3");
 
-  const handleConvert = async (e: any) => {
-    e.preventDefault();
-    setLoading(true);
-    setVideoInfo(null);
-
-    try {
-      const response = await axios.post(
-        "http://localhost:4000/api/get-video-info",
-        { url }
-      );
-      setVideoInfo(response.data);
+  const { mutate, data: videoInfo, isPending, isError } = useMutation({
+    mutationFn: (url: string) => youtubeService.getLinks(url),
+    onSuccess: () => {
       setSelectedAudio(0);
       setSelectedVideo(0);
-    } catch (err) {
-      setVideoInfo(null);
-      alert("Link alınmadı");
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+  });
 
-  const getAudioUrl = () =>
-    videoInfo?.audios?.length ? videoInfo.audios[selectedAudio].url : "#";
-
-  const getVideoUrl = () =>
-    videoInfo?.videos?.length ? videoInfo.videos[selectedVideo].url : "#";
-
-  // Thumbnail: ən yüksək keyfiyyətli (ən böyüyü) göstər
-  const getBestThumbnail = () => {
-    if (!videoInfo?.thumbnails?.length) return "";
-    return videoInfo.thumbnails.reduce((prev: any, curr: any) =>
-      prev.width * prev.height > curr.width * curr.height ? prev : curr
-    ).url;
-  };
-
+  // Dinamik qruplaşdırma (video):
   const extensionGroups: { [key: string]: any[] } = {};
   (videoInfo?.videos ?? []).forEach((video: any) => {
     const ext = video.extension?.toLowerCase() || "other";
@@ -52,6 +25,7 @@ export default function YoutubeServices() {
   });
   const extensionKeys = Object.keys(extensionGroups);
 
+  // Dinamik qruplaşdırma (audio):
   const audioExtensionGroups: { [key: string]: any[] } = {};
   (videoInfo?.audios ?? []).forEach((audio: any) => {
     const ext = audio.extension?.toLowerCase() || "other";
@@ -59,6 +33,25 @@ export default function YoutubeServices() {
     audioExtensionGroups[ext].push(audio);
   });
   const audioExtensionKeys = Object.keys(audioExtensionGroups);
+
+  const getAudioUrl = () =>
+    videoInfo?.audios?.length ? videoInfo.audios[selectedAudio].url : "#";
+
+  const getVideoUrl = () =>
+    videoInfo?.videos?.length ? videoInfo.videos[selectedVideo].url : "#";
+
+  // Thumbnail: ən yaxşı keyfiyyətli
+  const getBestThumbnail = () => {
+    if (!videoInfo?.thumbnails?.length) return "";
+    return videoInfo.thumbnails.reduce((prev: any, curr: any) =>
+      prev.width * prev.height > curr.width * curr.height ? prev : curr
+    ).url;
+  };
+
+  const handleConvert = (e: React.FormEvent) => {
+    e.preventDefault();
+    mutate(url);
+  };
 
   return (
     <div className="flex flex-col items-center bg-gray-50 min-h-screen py-12">
@@ -82,12 +75,17 @@ export default function YoutubeServices() {
             <button
               type="submit"
               className="bg-black text-white px-4 py-2 rounded-lg transition-all"
-              disabled={loading}
+              disabled={isPending}
             >
-              {loading ? "Loading..." : "Get Links"}
+              {isPending ? "Loading..." : "Get Links"}
             </button>
           </div>
         </div>
+        {isError && (
+          <div className="text-red-600 mt-2 text-center">
+            Failed to fetch video info.
+          </div>
+        )}
         {videoInfo && (
           <div className="mt-8 w-full">
             <img
@@ -110,17 +108,7 @@ export default function YoutubeServices() {
                     : "bg-gray-200 text-gray-700"
                 }`}
               >
-                Audio {" ("}
-                <span>
-                  {videoInfo.audios
-                    ?.map((audio: any) => audio.extension)
-                    .filter(
-                      (ext: string, idx: number, arr: string[]) =>
-                        arr.indexOf(ext) === idx
-                    )
-                    .join(", ") || "MP3"}
-                </span>
-                {")"}
+                Audio (<span>{audioExtensionKeys.join(", ") || "MP3"}</span>)
               </button>
               <button
                 type="button"
@@ -131,17 +119,7 @@ export default function YoutubeServices() {
                     : "bg-gray-200 text-gray-700"
                 }`}
               >
-                Video {" ("}
-                <span>
-                  {videoInfo.videos
-                    ?.map((audio: any) => audio.extension)
-                    .filter(
-                      (ext: string, idx: number, arr: string[]) =>
-                        arr.indexOf(ext) === idx
-                    )
-                    .join(", ") || "MP4"}
-                </span>
-                {")"}
+                Video (<span>{extensionKeys.join(", ") || "MP4"}</span>)
               </button>
             </div>
 
@@ -154,7 +132,7 @@ export default function YoutubeServices() {
                 <div
                   className={`grid grid-cols-1 md:grid-cols-${audioExtensionKeys.length} gap-4 mb-2`}
                 >
-                  {audioExtensionKeys.map((ext, _) => (
+                  {audioExtensionKeys.map((ext) => (
                     <div key={ext}>
                       <div className="font-bold mb-2 uppercase">{ext}</div>
                       {audioExtensionGroups[ext].map((audio, rowIdx) => {
@@ -217,7 +195,7 @@ export default function YoutubeServices() {
                 <div
                   className={`grid grid-cols-1 md:grid-cols-${extensionKeys.length} gap-4 mb-2`}
                 >
-                  {extensionKeys.map((ext, _) => (
+                  {extensionKeys.map((ext) => (
                     <div key={ext}>
                       <div className="font-bold mb-2 uppercase">{ext}</div>
                       {extensionGroups[ext].map((video, rowIdx) => {
@@ -244,16 +222,10 @@ export default function YoutubeServices() {
                                 {video.extension}
                               </span>
                               <span>{video.quality}</span>
-                              <span className="text-nowrap">
+                              <span>
                                 {(Number(video.size) / 1024 / 1024).toFixed(1)}{" "}
                                 MB
                               </span>
-                              {/* <span>
-                                {(Number(video.lengthMs) / 1000 / 60).toFixed(
-                                  1
-                                )}{" "}
-                                min
-                              </span> */}
                             </div>
                           </button>
                         );

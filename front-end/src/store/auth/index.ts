@@ -2,7 +2,7 @@ import authService from "@/services/auth";
 import { User } from "@/types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "..";
-import favoriteService from "@/services/favorite";
+// import favoriteService from "@/services/favorite";
 
 export interface AuthState {
   user: null | User;
@@ -44,9 +44,9 @@ export const authSlice = createSlice({
     builder.addCase(logoutAsync.rejected, (state) => {
       state.loading = false;
     });
-    builder.addCase(getFavAsync.fulfilled, (state, action) => {
-      state.favorites = action.payload;
-    });
+    // builder.addCase(getFavAsync.fulfilled, (state, action) => {
+    //   state.favorites = action.payload;
+    // });
   },
 });
 
@@ -58,10 +58,10 @@ export const getCurrentUserAsync = createAsyncThunk(
   }
 );
 
-export const getFavAsync = createAsyncThunk("auth/getFavAsync", async () => {
-  const { data } = await favoriteService.getAllWOPagination();
-  return data.favorites;
-});
+// export const getFavAsync = createAsyncThunk("auth/getFavAsync", async () => {
+//   const { data } = await favoriteService.getAllWOPagination();
+//   return data.favorites;
+// });
 
 export const getCurrentUserGoogleAsync = createAsyncThunk(
   "auth/googleLoginAsync",
