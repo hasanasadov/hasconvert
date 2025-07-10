@@ -27,17 +27,12 @@ const getAll = async (req: Request, res: Response) => {
         audios: "auto",
       },
       headers: {
-        "x-rapidapi-key": "6858440666msh7f810f0d270e7f2p161a03jsn00650cdf5e07",
+        "x-rapidapi-key": "355c8f6197msh1f95495cb67af3cp1cbee3jsn2d25ac47e9cf",
         "x-rapidapi-host": "youtube-media-downloader.p.rapidapi.com",
       },
     };
 
     const response = await axios.request(options);
-    console.log("----------------", response.data);
-    // response.data.result.videos  - video formatları (mp4)
-    // response.data.result.audios  - audio formatları (mp3 və s.)
-    // response.data.result.title   - başlıq və s.
-    console.log("----------------", response.data);
 
     res.json({
       title: response.data.title,
