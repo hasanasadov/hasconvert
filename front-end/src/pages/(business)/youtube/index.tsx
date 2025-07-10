@@ -154,7 +154,7 @@ export default function YoutubeServices() {
                 <div
                   className={`grid grid-cols-1 md:grid-cols-${audioExtensionKeys.length} gap-4 mb-2`}
                 >
-                  {audioExtensionKeys.map((ext, colIdx) => (
+                  {audioExtensionKeys.map((ext, _) => (
                     <div key={ext}>
                       <div className="font-bold mb-2 uppercase">{ext}</div>
                       {audioExtensionGroups[ext].map((audio, rowIdx) => {
@@ -217,7 +217,7 @@ export default function YoutubeServices() {
                 <div
                   className={`grid grid-cols-1 md:grid-cols-${extensionKeys.length} gap-4 mb-2`}
                 >
-                  {extensionKeys.map((ext, colIdx) => (
+                  {extensionKeys.map((ext, _) => (
                     <div key={ext}>
                       <div className="font-bold mb-2 uppercase">{ext}</div>
                       {extensionGroups[ext].map((video, rowIdx) => {

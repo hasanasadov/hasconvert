@@ -8,10 +8,10 @@ const MiniNav = () => {
   const location = useLocation();
   const years = new Date().getFullYear() - 1913;
   const condition =
-    location.pathname === paths.HOME ||
-    location.pathname === paths.TRUCKS ||
-    location.pathname === paths.DISCOUNTS ||
-    location.pathname === paths.BUSINESS;
+    location.pathname === paths.HOME 
+    // location.pathname === paths.TRUCKS ||
+    // location.pathname === paths.DISCOUNTS ||
+    // location.pathname === paths.BUSINESS;
   return (
     <RenderIf condition={condition}>
       <div className="bg-orange-600 text-center font-bold text-sm leading-6 font-sans  text-gray-900">

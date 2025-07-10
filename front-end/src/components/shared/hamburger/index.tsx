@@ -64,12 +64,12 @@ const HamburgerMenu = ({ className }: { className?: string }) => {
           >
             Rent
           </Link>
-          <Link
+          {/* <Link
             to={paths.TRUCKS}
             className="text-black  hover:text-orange-600 text-2xl font-roboto font-bold"
           >
             Trucks
-          </Link>
+          </Link> */}
           <Link
             to={paths.HOME}
             className="text-black  hover:text-orange-600 text-2xl font-roboto font-bold"
@@ -83,12 +83,12 @@ const HamburgerMenu = ({ className }: { className?: string }) => {
             SIXT+
             <p className="text-sm font-normal">Car Subscription</p>
           </Link>
-          <Link
+          {/* <Link
             to={paths.BUSINESS}
             className="text-black  hover:text-orange-600 text-2xl font-roboto font-bold"
           >
             Bussiness
-          </Link>
+          </Link> */}
         </div>
       </div>
     </div>
