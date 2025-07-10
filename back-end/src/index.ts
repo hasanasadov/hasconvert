@@ -4,7 +4,7 @@ import youtubeRoutes from "./routes/youtube";
 const app = express();
 const PORT = 3000;
 
-const allowedOrigins = [process.env.CLIENT_URL, "http://localhost:7777"];
+const allowedOrigins = ["https://hasconvert.vercel.app", "http://localhost:7777"];
 
 app.get("/", (req, res) => {
   res.send("Welcome to HasConvert API");
