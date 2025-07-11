@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import youtubeRoutes from "./routes/youtube";
+import downloadRoutes from "./routes/download";
 const app = express();
 app.set("trust proxy", 1);
 
@@ -25,7 +26,9 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Welcome to HasConvert API");
 });
+
 app.use("/youtube", youtubeRoutes);
+app.use("/download", downloadRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
