@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import youtubeService from "@/services/youtube";
-
+// VITE_APP_API_BASE_URL
+const BASE_URL = import.meta.env.VITE_APP_API_BASE_URL || "http://localhost:3000";
 type Format = {
   url: string;
   ext: string;
@@ -219,7 +220,7 @@ export default function YoutubeServices() {
 
   const handleDownload = (format: Format) => {
     window.open(
-      `http://localhost:3000/download?url=${encodeURIComponent(
+      `${BASE_URL}/download?url=${encodeURIComponent(
         format.url
       )}&ext=${format.ext}&title=${encodeURIComponent(videoInfo.title)}`,
       "_blank"

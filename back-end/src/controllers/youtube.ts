@@ -47,7 +47,7 @@ const getAll = async (req: Request, res: Response) => {
   }
 };
 
-const YTDLP_PATH = "yt-dlp";
+const YTDLP_PATH = process.env.YTDLP_PATH || "/opt/homebrew/bin/yt-dlp";
 
 function groupFormats(formats: any[]) {
   const audio: any[] = [];
